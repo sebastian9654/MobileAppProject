@@ -44,7 +44,12 @@ public class GameLevelActivity extends AppCompatActivity {
         });
 
         // Start the game by showing the first ingredient
-        startGame();
+        ingredientImageView.post(new Runnable() {
+            @Override
+            public void run() {
+                startGame();
+            }
+        });
     }
 
     // Method to start or restart the game
@@ -109,7 +114,12 @@ public class GameLevelActivity extends AppCompatActivity {
         ingredientImageView.setImageResource(newIngredientImage);
 
         // Call the existing repositionIngredient() logic to set the new position
-        repositionIngredient();
+        ingredientImageView.post(new Runnable() {
+            @Override
+            public void run() {
+                repositionIngredient();
+            }
+        });
     }
 
     // Method to reposition the ingredient to a random location on the screen
