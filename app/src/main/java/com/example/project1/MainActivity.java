@@ -8,10 +8,9 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    Button button1;
-    Button startGameButton;
-
-    Button startJigsawButton;
+    private Button button1;
+    private Button startGameButton;
+    private Button startJigsawButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +18,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         button1 = findViewById(R.id.button1);
-        startGameButton = findViewById(R.id.startGameButton); // Add this line
-        startJigsawButton = findViewById(R.id.jigsawButton);
+        startGameButton = findViewById(R.id.startGameButton);
+        startJigsawButton = findViewById(R.id.startStopButton);
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
