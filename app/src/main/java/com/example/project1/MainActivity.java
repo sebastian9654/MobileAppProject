@@ -9,7 +9,9 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
     Button button1;
-    Button startGameButton; // Add this line
+    Button startGameButton;
+
+    Button startJigsawButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         button1 = findViewById(R.id.button1);
         startGameButton = findViewById(R.id.startGameButton); // Add this line
+        startJigsawButton = findViewById(R.id.jigsawButton);
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +37,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Start the game level activity
                 Intent intent = new Intent(MainActivity.this, GameLevelActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        startJigsawButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start the game level activity
+                Intent intent = new Intent(MainActivity.this, JigsawPuzzleActivity.class);
                 startActivity(intent);
             }
         });
