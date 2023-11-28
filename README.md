@@ -42,7 +42,7 @@ To run the Plant-Based Food App locally, follow these steps:
 - **Development Environment**: Android Studio
 
 
-## License
+## Conclusion
 
 For any queries, feedback, or collaboration opportunities related to the Plant-Based Food Game App project, feel free to contact any team member mentioned above.
 
