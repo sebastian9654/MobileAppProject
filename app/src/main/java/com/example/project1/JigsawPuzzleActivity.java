@@ -40,6 +40,7 @@ public class JigsawPuzzleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startLevel();
+                startJigsawGame.setVisibility(View.INVISIBLE);
             }
         });
     }
