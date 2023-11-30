@@ -1,153 +1,155 @@
-// GameLevelActivity.java
 package com.example.project1;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
+import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Random;
 
 public class GameLevelActivity extends AppCompatActivity {
-    private int score = 0;
+
+    private RelativeLayout gameLayout;
+    private ImageView basket;
     private TextView scoreTextView;
-    private ImageView ingredientImageView;
-    private TextView timerTextView;
-    private boolean isGameActive = false; // Added variable to track game state
-    private int[] ingredientImages = {R.drawable.carrot, R.drawable.egg, R.drawable.onion, R.drawable.tomato};
-    private Random random = new Random();
+    private TextView strikesTextView;
+    private Handler handler = new Handler();
+    private Runnable runnable;
+
+    private float lastX;
+    private int score = 0;
+    private int strikes = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_level);
+        setContentView(R.layout.activity_level_one);
 
-        // Initialize views
+        gameLayout = findViewById(R.id.gameLayout);
+        basket = findViewById(R.id.basket);
         scoreTextView = findViewById(R.id.scoreTextView);
-        ingredientImageView = findViewById(R.id.ingredientImageView);
-        timerTextView = findViewById(R.id.timerTextView);
+        strikesTextView = findViewById(R.id.strikesTextView);
 
-        // Set up a click listener for the ingredient
-        ingredientImageView.setOnClickListener(new View.OnClickListener() {
+        // Start the falling vegetables when the activity starts
+        startFallingVegetables();
+
+        // Add touch listener to the basket for dragging
+        basket.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                // Ingredient clicked, increase score
-                if (isGameActive) {
-                    score++;
-                    updateScore();
+            public boolean onTouch(View view, MotionEvent event) {
+                float x = event.getRawX();
 
-                    // Randomly reposition and switch the ingredient for the next click
-                    repositionAndSwitchIngredient();
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        lastX = x;
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        float dx = x - lastX;
+                        float newX = view.getX() + dx;
+
+                        // Ensure the basket stays within the screen boundaries
+                        if (newX > 0 && newX + view.getWidth() < gameLayout.getWidth()) {
+                            view.setX(newX);
+                        }
+
+                        lastX = x;
+                        break;
                 }
+                return true;
             }
         });
+    }
 
-        // Start the game by showing the first ingredient
-        ingredientImageView.post(new Runnable() {
-            @Override
+    private void startFallingVegetables() {
+        handler.postDelayed(runnable = new Runnable() {
             public void run() {
-                startGame();
+                // Create a new ImageView for the falling vegetable
+                ImageView vegetable = new ImageView(getApplicationContext());
+                Random random = new Random();
+
+                // Set a random vegetable image
+                int[] vegetables = {R.drawable.egg, R.drawable.carrot, R.drawable.onion, R.drawable.tomato};
+                vegetable.setImageResource(vegetables[random.nextInt(vegetables.length)]);
+
+                // Set the layout parameters for the ImageView
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
+                layoutParams.leftMargin = random.nextInt(gameLayout.getWidth() - 150); // Random x-coordinate
+                layoutParams.topMargin = 0; // Start from the top
+                vegetable.setLayoutParams(layoutParams);
+
+                // Add the ImageView to the layout
+                gameLayout.addView(vegetable);
+
+                // Make the vegetable fall by animating its Y-coordinate
+                vegetable.animate().translationY(gameLayout.getHeight()).setDuration(3000).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Check for collision with the basket
+                        if (isViewOverlapping(vegetable, basket)) {
+                            // Increment the score when there is a collision
+                            score++;
+                            scoreTextView.setText("Score: " + score);
+                        } else {
+                            // Increment strikes when the vegetable falls to the bottom
+                            strikes++;
+                            strikesTextView.setText("Strikes: " + strikes);
+
+                            // Check for game over (3 strikes)
+                            if (strikes == 3) {
+                                gameOver();
+                                return; // Stop spawning vegetables when the game is over
+                            }
+                        }
+
+                        // Remove the vegetable from the layout after it falls
+                        gameLayout.removeView(vegetable);
+                    }
+                });
+
+                // Continue spawning vegetables
+                handler.postDelayed(this, 2000);
             }
-        });
+        }, 2000); // Initial delay
     }
 
-    // Method to start or restart the game
-    private void startGame() {
-        // Reset game state
-        score = 0;
-        updateScore();
-
-        // Reset the timer text
-        timerTextView.setText("Time: 15");
-
-        // Set isGameActive to true
-        isGameActive = true;
-
-        // Start a new countdown timer
-        new CountDownTimer(15000, 1000) { // 15 seconds countdown
-            public void onTick(long millisUntilFinished) {
-                // Update the timer on each tick
-                timerTextView.setText("Time: " + millisUntilFinished / 1000);
-            }
-
-            public void onFinish() {
-                // Game over when the timer finishes
-                endGame();
-            }
-        }.start();
-
-        // Show the first ingredient
-        repositionAndSwitchIngredient();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(runnable);
     }
 
-    // Method to update the score on the screen
-    private void updateScore() {
-        scoreTextView.setText("Score: " + score);
+    // Check if two views overlap
+    private boolean isViewOverlapping(View firstView, View secondView) {
+        int[] firstPosition = new int[2];
+        int[] secondPosition = new int[2];
 
-        // Check if the player has reached a certain score to proceed to the next level
-        if (score >= 10) {
-            // For simplicity, let's finish the activity (end the game) when the score reaches 10
-            endGame();
-        }
+        firstView.getLocationOnScreen(firstPosition);
+        secondView.getLocationOnScreen(secondPosition);
+
+        int firstViewLeft = firstPosition[0];
+        int firstViewRight = firstViewLeft + firstView.getWidth();
+        int firstViewTop = firstPosition[1];
+        int firstViewBottom = firstViewTop + firstView.getHeight();
+
+        int secondViewLeft = secondPosition[0];
+        int secondViewRight = secondViewLeft + secondView.getWidth();
+        int secondViewTop = secondPosition[1];
+        int secondViewBottom = secondViewTop + secondView.getHeight();
+
+        return !(firstViewLeft > secondViewRight || firstViewRight < secondViewLeft || firstViewTop > secondViewBottom || firstViewBottom < secondViewTop);
     }
 
-    // Method to end the game
-    private void endGame() {
-        // Set isGameActive to false
-        isGameActive = false;
-
-        // You can add additional logic here, such as displaying a game over message
-        // or transitioning to the next level
-
-        // For now, let's finish the activity
-        finish();
-    }
-
-    // Method to reposition and switch the ingredient to a random location on the screen
-    private void repositionAndSwitchIngredient() {
-        // Randomly select a new ingredient image
-        int randomIngredientIndex = random.nextInt(ingredientImages.length);
-        int newIngredientImage = ingredientImages[randomIngredientIndex];
-
-        // Set the new ingredient image
-        ingredientImageView.setImageResource(newIngredientImage);
-
-        // Call the existing repositionIngredient() logic to set the new position
-        ingredientImageView.post(new Runnable() {
-            @Override
-            public void run() {
-                repositionIngredient();
-            }
-        });
-    }
-
-    // Method to reposition the ingredient to a random location on the screen
-    private void repositionIngredient() {
-        int screenWidth = getResources().getDisplayMetrics().widthPixels;
-        int screenHeight = getResources().getDisplayMetrics().heightPixels;
-
-        // Get the dimensions of the ingredient image
-        int ingredientWidth = ingredientImageView.getWidth();
-        int ingredientHeight = ingredientImageView.getHeight();
-
-        // Ensure positive bounds
-        int widthBound = Math.max(screenWidth - ingredientWidth, 1);
-        int heightBound = Math.max(screenHeight - ingredientHeight, 1);
-
-        // Initialize variables to store the previous position
-        float previousX = ingredientImageView.getX();
-        float previousY = ingredientImageView.getY();
-
-        // Set the new position of the ingredient, making sure it's different from the previous one
-        float newX, newY;
-        do {
-            newX = random.nextInt(widthBound);
-            newY = random.nextInt(heightBound);
-        } while (Math.abs(newX - previousX) < ingredientWidth && Math.abs(newY - previousY) < ingredientHeight);
-
-        // Apply the new position
-        ingredientImageView.setX(newX);
-        ingredientImageView.setY(newY);
+    // Handle game over
+    private void gameOver() {
+        Toast.makeText(this, "Game Over!", Toast.LENGTH_SHORT).show();
+        // Perform any additional actions for game over, e.g., show a dialog, navigate to another activity, etc.
+        finish(); // Close the current activity
     }
 }
