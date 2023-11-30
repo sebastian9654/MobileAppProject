@@ -77,6 +77,10 @@ public class GameLevelActivity extends AppCompatActivity {
                 // Set a random item image (including the bomb)
                 final int[] items = {R.drawable.egg, R.drawable.carrot, R.drawable.onion, R.drawable.tomato, R.drawable.bomb};
                 int randomItem = random.nextInt(items.length);
+
+                // Debug print for random item selection
+                System.out.println("Random item selected: " + items[randomItem]);
+
                 item.setImageResource(items[randomItem]);
 
                 // Set the layout parameters for the ImageView
@@ -110,16 +114,20 @@ public class GameLevelActivity extends AppCompatActivity {
 
                             // Remove the item from the layout after it collides with the basket
                             gameLayout.removeView(item);
-                        } else {
-                            // Increment strikes when the item falls to the bottom
+                        } else if (items[randomItem] != R.drawable.bomb) {
+                            // Increment strikes only when the item falls to the bottom and it's not a bomb,
+                            // and it hasn't been caught by the user
                             strikes++;
                             strikesTextView.setText("Strikes: " + strikes);
 
-                            // Check for game over (3 strikes)
-                            if (strikes == 3) {
-                                gameOver();
-                                return; // Stop spawning items when the game is over
-                            }
+                            // Debug print for game over
+                            System.out.println("Strikes: " + strikes + " - Score: " + score);
+                        }
+
+                        // Check for game over (3 strikes)
+                        if (strikes == 3) {
+                            gameOver();
+                            return; // Stop spawning items when the game is over
                         }
                     }
                 });
@@ -129,6 +137,7 @@ public class GameLevelActivity extends AppCompatActivity {
             }
         }, 2000); // Initial delay
     }
+
 
 
 
