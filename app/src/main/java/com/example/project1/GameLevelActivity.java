@@ -70,54 +70,67 @@ public class GameLevelActivity extends AppCompatActivity {
     private void startFallingVegetables() {
         handler.postDelayed(runnable = new Runnable() {
             public void run() {
-                // Create a new ImageView for the falling vegetable
-                ImageView vegetable = new ImageView(getApplicationContext());
+                // Create a new ImageView for the falling item
+                ImageView item = new ImageView(getApplicationContext());
                 Random random = new Random();
 
-                // Set a random vegetable image
-                int[] vegetables = {R.drawable.egg, R.drawable.carrot, R.drawable.onion, R.drawable.tomato};
-                vegetable.setImageResource(vegetables[random.nextInt(vegetables.length)]);
+                // Set a random item image (including the bomb)
+                final int[] items = {R.drawable.egg, R.drawable.carrot, R.drawable.onion, R.drawable.tomato, R.drawable.bomb};
+                int randomItem = random.nextInt(items.length);
+                item.setImageResource(items[randomItem]);
 
                 // Set the layout parameters for the ImageView
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
                 layoutParams.leftMargin = random.nextInt(gameLayout.getWidth() - 150); // Random x-coordinate
                 layoutParams.topMargin = 0; // Start from the top
-                vegetable.setLayoutParams(layoutParams);
+                item.setLayoutParams(layoutParams);
 
                 // Add the ImageView to the layout
-                gameLayout.addView(vegetable);
+                gameLayout.addView(item);
 
-                // Make the vegetable fall by animating its Y-coordinate
-                vegetable.animate().translationY(gameLayout.getHeight()).setDuration(3000).withEndAction(new Runnable() {
+                // Make the item fall by animating its Y-coordinate
+                item.animate().translationY(gameLayout.getHeight()).setDuration(3000).withEndAction(new Runnable() {
                     @Override
                     public void run() {
                         // Check for collision with the basket
-                        if (isViewOverlapping(vegetable, basket)) {
-                            // Increment the score when there is a collision
-                            score++;
-                            scoreTextView.setText("Score: " + score);
+                        if (isViewOverlapping(item, basket)) {
+                            // Check if the caught item is a bomb
+                            if (items[randomItem] == R.drawable.bomb) {
+                                // If it's a bomb, increment strikes
+                                strikes++;
+                                strikesTextView.setText("Strikes: " + strikes);
+
+                                // Debug print
+                                System.out.println("Caught a bomb! Strikes: " + strikes);
+                            } else {
+                                // If it's a vegetable, increment score
+                                score++;
+                                scoreTextView.setText("Score: " + score);
+                            }
+
+                            // Remove the item from the layout after it collides with the basket
+                            gameLayout.removeView(item);
                         } else {
-                            // Increment strikes when the vegetable falls to the bottom
+                            // Increment strikes when the item falls to the bottom
                             strikes++;
                             strikesTextView.setText("Strikes: " + strikes);
 
                             // Check for game over (3 strikes)
                             if (strikes == 3) {
                                 gameOver();
-                                return; // Stop spawning vegetables when the game is over
+                                return; // Stop spawning items when the game is over
                             }
                         }
-
-                        // Remove the vegetable from the layout after it falls
-                        gameLayout.removeView(vegetable);
                     }
                 });
 
-                // Continue spawning vegetables
+                // Continue spawning items
                 handler.postDelayed(this, 2000);
             }
         }, 2000); // Initial delay
     }
+
+
 
     @Override
     protected void onDestroy() {
