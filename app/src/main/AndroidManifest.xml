@@ -29,6 +29,10 @@
             android:name=".GameLevelActivity"
             android:exported="true">
         </activity>
+
+        <!-- Inside the <application> tag in AndroidManifest.xml -->
+        <activity android:name=".CongratulationsActivity" />
+
     </application>
 
 </manifest>
