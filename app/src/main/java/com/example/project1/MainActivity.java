@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start the game level activity
-                Intent intent = new Intent(MainActivity.this, JigsawPuzzleActivity.class);
+                Intent intent = new Intent(MainActivity.this, FoodMatch.class);
                 startActivity(intent);
             }
         });
