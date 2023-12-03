@@ -1,12 +1,12 @@
-package com.example.project1;
-import android.graphics.Rect;
-
+package com.example.project1;// Import necessary packages
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -18,18 +18,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int broccoliX, broccoliY, broccoliSpeed;
     private boolean isJumping;
 
-
     private boolean running;  // Flag to control the game loop
 
     private Bitmap broccoliBitmap; // Bitmap for the broccoli image
     private int score; //store score
     private static final float GRAVITY = 0.8f;  // You can adjust this value based on your desired gravity strength
-    private static final float JUMP_STRENGTH = -15.0f;  // You can adjust this value based on your desired jump strength
+    private static final float JUMP_STRENGTH = -5.0f;  // You can adjust this value based on your desired jump strength
     private float broccoliVelocity = 0;
     private boolean gameOver = false;
+    private Context context; // Add a reference to the Context
 
     public GameView(Context context) {
         super(context);
+        this.context = context; // Initialize the context
         getHolder().addCallback(this);
         paint = new Paint();
         paint.setColor(Color.WHITE);
@@ -43,10 +44,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         broccoliY = getHeight() / 2;
         broccoliSpeed = 8;
         score = 0; //initialize score
-
-
-
     }
+
     private void drawGame(Canvas canvas) {
         canvas.drawColor(Color.parseColor("#ADD8E6")); // Light blue background
         if (gameOver) {
@@ -68,7 +67,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             obstacle.draw(canvas);
             paint.setTextSize(80);  // Adjust the size as needed
             paint.setColor(Color.BLACK);  // Adjust the color as needed
-
         }
     }
 
@@ -99,6 +97,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }).start();
     }
+
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         // Handle surface changes
@@ -122,7 +121,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         return true;
     }
-
 
     public void update() {
         // Update game state
@@ -157,6 +155,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 // Handle collision (e.g., end the game)
                 handleCollision();
             }
+
+            // Check if the score is 100
+            if (score == 100) {
+                showLevelCompleteMessage();
+                startNextLevelActivity();
+            }
         }
     }
 
@@ -164,6 +168,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // Set the game over flag to true
         gameOver = true;
     }
+
     private void jump() {
         isJumping = true;
     }
@@ -171,6 +176,25 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private boolean isCollision() {
         return broccoliX + 100 > obstacle.getX() && broccoliX < obstacle.getX() + obstacle.getWidth()
                 && broccoliY + 100 > obstacle.getY() && broccoliY < obstacle.getY() + obstacle.getHeight();
+    }
+
+    private void showLevelCompleteMessage() {
+        // Display a toast or other message indicating level completion
+        // You can use Toast or any other UI element for this purpose
+        // For example:
+        // Toast.makeText(context, "Congratulations! You beat this level!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void startNextLevelActivity() {
+        // Create an Intent to start the next level activity
+        Intent intent = new Intent(context, FoodMatch.class);
+
+        // You may want to add extra data to the Intent if needed
+        // For example, you can pass the current score to the next level
+        // intent.putExtra("score", score);
+
+        // Start the next level activity
+        context.startActivity(intent);
     }
 
     public void resume() {
