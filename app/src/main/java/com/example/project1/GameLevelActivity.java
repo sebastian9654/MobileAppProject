@@ -1,5 +1,7 @@
+// GameLevelActivity.java
 package com.example.project1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -25,6 +27,8 @@ public class GameLevelActivity extends AppCompatActivity {
     private float lastX;
     private int score = 0;
     private int strikes = 0;
+
+    private static final int WINNING_SCORE = 15; // Set the winning score
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,10 @@ public class GameLevelActivity extends AppCompatActivity {
                 // Set a random item image (including the bomb)
                 final int[] items = {R.drawable.egg, R.drawable.carrot, R.drawable.onion, R.drawable.tomato, R.drawable.bomb};
                 int randomItem = random.nextInt(items.length);
+
+                // Debug print for random item selection
+                System.out.println("Random item selected: " + items[randomItem]);
+
                 item.setImageResource(items[randomItem]);
 
                 // Set the layout parameters for the ImageView
@@ -89,6 +97,7 @@ public class GameLevelActivity extends AppCompatActivity {
                 gameLayout.addView(item);
 
                 // Make the item fall by animating its Y-coordinate
+                // Inside the withEndAction callback in startFallingVegetables method
                 item.animate().translationY(gameLayout.getHeight()).setDuration(3000).withEndAction(new Runnable() {
                     @Override
                     public void run() {
@@ -99,27 +108,30 @@ public class GameLevelActivity extends AppCompatActivity {
                                 // If it's a bomb, increment strikes
                                 strikes++;
                                 strikesTextView.setText("Strikes: " + strikes);
-
-                                // Debug print
                                 System.out.println("Caught a bomb! Strikes: " + strikes);
                             } else {
                                 // If it's a vegetable, increment score
                                 score++;
                                 scoreTextView.setText("Score: " + score);
                             }
-
-                            // Remove the item from the layout after it collides with the basket
-                            gameLayout.removeView(item);
-                        } else {
-                            // Increment strikes when the item falls to the bottom
+                        } else if (items[randomItem] != R.drawable.bomb) {
+                            // Increment strikes only when the item falls to the bottom and it's not a bomb,
+                            // and it hasn't been caught by the user
                             strikes++;
                             strikesTextView.setText("Strikes: " + strikes);
+                            System.out.println("Strikes: " + strikes + " - Score: " + score);
+                        }
 
-                            // Check for game over (3 strikes)
-                            if (strikes == 3) {
-                                gameOver();
-                                return; // Stop spawning items when the game is over
-                            }
+                        // Check for game over (3 strikes)
+                        if (strikes == 3) {
+                            gameOver();
+                            return; // Stop spawning items when the game is over
+                        }
+
+                        // Check for level completion (score of 15)
+                        if (score == WINNING_SCORE) {
+                            levelCompleted();
+                            return; // Stop spawning items when the level is completed
                         }
                     }
                 });
@@ -128,14 +140,6 @@ public class GameLevelActivity extends AppCompatActivity {
                 handler.postDelayed(this, 2000);
             }
         }, 2000); // Initial delay
-    }
-
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        handler.removeCallbacks(runnable);
     }
 
     // Check if two views overlap
@@ -164,5 +168,29 @@ public class GameLevelActivity extends AppCompatActivity {
         Toast.makeText(this, "Game Over!", Toast.LENGTH_SHORT).show();
         // Perform any additional actions for game over, e.g., show a dialog, navigate to another activity, etc.
         finish(); // Close the current activity
+    }
+
+    // Handle level completion
+    private void levelCompleted() {
+        Toast.makeText(this, "Congratulations! You have beaten the level!", Toast.LENGTH_SHORT).show();
+
+        // Credits information
+        String credits = "Credits: Sebastian Rodriguez, Malcolm Imomio, Yesenia Hurtado\n" +
+                "Github Link: https://github.com/sebastian9654/MobileAppProject";
+
+
+        // Open the new activity for congratulations
+        Intent intent = new Intent(GameLevelActivity.this, CongratulationsActivity.class);
+        intent.putExtra("credits", credits);
+        startActivity(intent);
+
+        // Close the current activity
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(runnable);
     }
 }
