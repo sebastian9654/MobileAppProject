@@ -10,7 +10,7 @@
         android:layout_width="300dp"
         android:layout_height="325dp"
         android:layout_marginTop="32dp"
-        android:src="@drawable/egg"
+        android:src="@drawable/egg_jigsaw"
         app:layout_constraintBottom_toTopOf="@+id/optionsLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
