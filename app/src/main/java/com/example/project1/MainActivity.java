@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    Button button1;
-    Button startGameButton; // Add this line
+    private Button button1;
+    private Button startGameButton;
+    private Button startJigsawLevelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +18,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         button1 = findViewById(R.id.button1);
-        startGameButton = findViewById(R.id.startGameButton); // Add this line
+        startGameButton = findViewById(R.id.startGameButton);
+        startJigsawLevelButton = findViewById(R.id.startJigsawLevelButton);
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +36,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Start the game level activity
                 Intent intent = new Intent(MainActivity.this, GameLevelActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        startJigsawLevelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start the game level activity
+                Intent intent = new Intent(MainActivity.this, FoodMatch.class);
                 startActivity(intent);
             }
         });
