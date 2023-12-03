@@ -16,10 +16,9 @@ Welcome to our Plant-Based Food App project repository! This app is developed as
 - **Role**: Developer
 - **GitHub**: [eimomio1](https://github.com/eimomio1)
 
-
 ## Project Overview
 
-The Plant-Based Food App aims to provide a user-friendly game for people of all ages
+The Plant-Based Food App aims to provide a user-friendly game for people of all ages.
 
 ## Installation and Setup
 
@@ -41,8 +40,9 @@ To run the Plant-Based Food App locally, follow these steps:
 - **Android SDK**: API level 26 (Android 8.0 Oreo) and above
 - **Development Environment**: Android Studio
 
+## License
 
-## Conclusion
+This project is licensed under the [Gnu Public License](LICENSE).
 
 For any queries, feedback, or collaboration opportunities related to the Plant-Based Food Game App project, feel free to contact any team member mentioned above.
 
