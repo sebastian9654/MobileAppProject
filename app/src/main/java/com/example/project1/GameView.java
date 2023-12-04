@@ -1,4 +1,5 @@
-package com.example.project1;// Import necessary packages
+package com.example.project1;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -15,22 +16,19 @@ import android.view.SurfaceView;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Obstacle obstacle;
     private Paint paint;
-
-    private int broccoliX, broccoliY, broccoliSpeed;
+    private int broccoliX, broccoliY;
     private boolean isJumping;
-
-    private boolean running;  // Flag to control the game loop
-
+    public static int screenWidth;
+    public static int screenHeight;
+    private boolean running;
     private Bitmap broccoliBitmap; // Bitmap for the broccoli image
-    private int score; //store score
-    private static final float GRAVITY = 0.8f;  // You can adjust this value based on your desired gravity strength
-    private static final float JUMP_STRENGTH = -15.0f;  // You can adjust this value based on your desired jump strength
+    private int score;
+    private static final float GRAVITY = 0.8f;
+    private static final float JUMP_STRENGTH = -15.0f;
     private float broccoliVelocity = 0;
     private boolean gameOver = false;
     private Context context; // Add a reference to the Context
-    private final int MINIMUM_SCORE = 100;
-    public static int screenWidth;
-    public static int screenHeight;
+    private final int MINIMUM_SCORE = 200;
     public GameView(Context context) {
         super(context);
         this.context = context; // Initialize the context
@@ -45,16 +43,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // Set initial position and speed for the broccoli
         broccoliX = 100;
         broccoliY = getHeight() / 2;
-        broccoliSpeed = 8;
         score = 0; //initialize score
     }
 
     private void drawGame(Canvas canvas) {
-        // Draw the background image
-        Bitmap backgroundImage = BitmapFactory.decodeResource(getResources(), R.drawable.level3);
-        Rect destRectBackground = new Rect(0, 0, getWidth(), getHeight());
-        canvas.drawBitmap(backgroundImage, null, destRectBackground, paint);
-
+        canvas.drawColor(Color.parseColor("#58e058")); // Light blue background
         if (gameOver) {
             paint.setTextSize(100);
             paint.setColor(Color.BLACK);
@@ -62,31 +55,27 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             paint.setTextSize(50);
             canvas.drawText("Score: " + score, getWidth() / 3, getHeight() / 2 + 100, paint);
         } else {
-            // Define the destination rectangle for the broccoli
-            Rect destRect = new Rect(broccoliX, broccoliY, broccoliX + 100, broccoliY + 100); // Adjust size as needed
-
-            // Draw broccoli with the destination rectangle
+            Rect destRect = new Rect(broccoliX, broccoliY, broccoliX + 100, broccoliY + 100);
             canvas.drawBitmap(broccoliBitmap, null, destRect, paint);
-            // Draw the score
-            canvas.drawText("Score: " + score, 50, 50, paint);
+            canvas.drawText("Score: " + score, 50, 90, paint);
 
             // Draw obstacle
             obstacle.draw(canvas);
-            paint.setTextSize(80);  // Adjust the size as needed
-            paint.setColor(Color.BLACK);  // Adjust the color as needed
+            paint.setTextSize(80);
+            paint.setColor(Color.BLACK);
         }
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         running = true;  // Start the game loop
+
         // Set the screen dimensions
         screenWidth = getWidth();
         screenHeight = getHeight();
 
         // Initialize the obstacle with the correct width inside surfaceCreated
         obstacle = new Obstacle(screenWidth, screenWidth, screenHeight, 100, 150);
-
 
         new Thread(() -> {
             while (running) {
@@ -98,7 +87,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
                 update();
                 try {
-                    Thread.sleep(16); // Adjust as needed for the desired frame rate
+                    Thread.sleep(16);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -108,7 +97,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        // Handle surface changes
     }
 
     @Override
@@ -132,7 +120,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
         // Update game state
-
         if (!gameOver) {
             if (isJumping) {
                 broccoliVelocity += JUMP_STRENGTH;
@@ -150,7 +137,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             // Check for scoring conditions
             if (broccoliX > obstacle.getX() + obstacle.getWidth()) {
-                // Broccoli has passed the obstacle, increase the score
                 score++;
             }
 
@@ -160,22 +146,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             // Check for collision
             if (isCollision()) {
                 handleCollision();
-                // Check if the score = MINIMUM_SCORE
-
-
+                if (score >= MINIMUM_SCORE) {
+                    startCongratsActivity();
+                }
+                else {
                     restartThis();
-
-            }
-
-
-            if (score >= MINIMUM_SCORE) {
-                startCongratsActivity();
+                }
             }
         }
     }
 
     private void handleCollision() {
-        // Set the game over flag to true
         gameOver = true;
     }
 
@@ -199,17 +180,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private void restartThis() {
         Intent intent = new Intent(context, RestartGameActivity.class);
-        intent.putExtra("score", score); // Pass the current score to the RestartGameActivity
-        intent.putExtra("nextLevelClass", BroccoliRunActivity.class); // Set the next level class
+        intent.putExtra("score", score);
+        intent.putExtra("nextLevelClass", BroccoliRunActivity.class);
         context.startActivity(intent);
-        ((Activity) context).finish(); // Finish the current activity
+        ((Activity) context).finish();
     }
 
     public void resume() {
-        // Resume game loop logic, if necessary
     }
 
     public void pause() {
-        // Pause game loop logic, if necessary
     }
 }

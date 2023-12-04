@@ -28,7 +28,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
     private int score = 0;
     private int strikes = 0;
 
-    private static final int WINNING_SCORE = 10; // Set the winning score
+    private static final int WINNING_SCORE = 1; // Set the winning score
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         gameLayout = findViewById(R.id.gameLayout);
 
         // Set the background of the gameLayout to the grocery.png image
-        gameLayout.setBackgroundResource(R.drawable.grocery);
+        gameLayout.setBackgroundResource(R.drawable.store_1);
         basket = findViewById(R.id.basket);
         scoreTextView = findViewById(R.id.scoreTextView);
         strikesTextView = findViewById(R.id.strikesTextView);

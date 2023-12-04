@@ -6,9 +6,12 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,23 +28,28 @@ public class FoodMatchingActivity extends AppCompatActivity {
     private int score = 0;
     private TextView scoreTextView, timerTextView;
     private CountDownTimer countDownTimer;
-    private static final long TIMER_DURATION = 60000; // 60 seconds
+    private static final long TIMER_DURATION = 3000; // 60 seconds
 
     private Map<Integer, String> foodNameMap = new HashMap<>();
     private Class<?> nextLevelClass = BroccoliRunActivity.class; // Replace with your next level class
-    private final int MINIMUM_SCORE = 20;
+    private final int MINIMUM_SCORE = 1;
     private int[] ingredients = {
             R.drawable.carrot_jigsaw,
             R.drawable.egg_jigsaw,
             R.drawable.onion_jigsaw,
             R.drawable.tomato_jigsaw
     };
+    private ConstraintLayout gameLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_match);
+        gameLayout = findViewById(R.id.gameLayout);
 
+        // Set the background of the gameLayout to the grocery.png image
+        gameLayout.setBackgroundResource(R.drawable.kitchen);
         foodToMatchView = findViewById(R.id.foodToMatchView);
 
         option1Button = findViewById(R.id.option1Button);
