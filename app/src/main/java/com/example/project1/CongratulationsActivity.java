@@ -25,14 +25,12 @@ public class CongratulationsActivity extends AppCompatActivity {
 
         // Add a click listener for the Main Menu button
         Button mainMenuButton = findViewById(R.id.mainMenuButton);
-        mainMenuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start the main activity
-                Intent intent = new Intent(CongratulationsActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish(); // Close the current activity
-            }
+
+        mainMenuButton.setOnClickListener(v -> {
+            // Start the main activity
+            Intent intent = new Intent(CongratulationsActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish(); // Close the current activity
         });
     }
 }

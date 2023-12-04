@@ -28,7 +28,7 @@ public class GameLevelActivity extends AppCompatActivity {
     private int score = 0;
     private int strikes = 0;
 
-    private static final int WINNING_SCORE = 15; // Set the winning score
+    private static final int WINNING_SCORE = 1; // Set the winning score
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

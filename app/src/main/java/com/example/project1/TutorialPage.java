@@ -35,6 +35,7 @@ public class TutorialPage extends AppCompatActivity {
                 // opening a new intent to open Level00 activity.
                 Intent level00Intent = new Intent(TutorialPage.this, Level00.class);
                 startActivity(level00Intent);
+                finish();
             }
         });
     }

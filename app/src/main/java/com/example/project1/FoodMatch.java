@@ -1,5 +1,10 @@
 package com.example.project1;
 
+import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -27,6 +32,8 @@ public class FoodMatch extends AppCompatActivity {
     private static final long TIMER_DURATION = 60000; // 60 seconds
 
     private Map<Integer, String> foodNameMap = new HashMap<>();
+    private Class<?> nextLevelClass = GameLevelActivity.class; // Replace with your next level class
+
     private int[] ingredients = {
             R.drawable.carrot_jigsaw,
             R.drawable.egg_jigsaw,
@@ -80,9 +87,6 @@ public class FoodMatch extends AppCompatActivity {
 
         // Shuffle the options to randomize their order
         Collections.shuffle(options);
-        System.out.println(options.get(0));
-        System.out.println(options.get(1));
-        System.out.println(options.get(2));
         // Set the text for the buttons
         option1Button.setText(options.get(0));
         option2Button.setText(options.get(1));
@@ -123,6 +127,9 @@ public class FoodMatch extends AppCompatActivity {
             Toast.makeText(this, "Incorrect Match!", Toast.LENGTH_SHORT).show();
         }
         setOptionTexts(correctFoodName);
+        if (this.score == 5) {
+            startNextLevelActivity();
+        }
         startGame();
     }
 
@@ -133,4 +140,22 @@ public class FoodMatch extends AppCompatActivity {
             countDownTimer.cancel();
         }
     }
+
+    private void startNextLevelActivity() {
+        // Create an Intent to start the next level activity
+        Intent intent = new Intent(FoodMatch.this, GameLevelActivity.class);
+        gameOver();
+        finish();
+    }
+    private void gameOver() {
+        // Start the GameOverActivity and pass the score
+        Intent intent = new Intent(FoodMatch.this, GameOverActivity.class);
+        intent.putExtra("score", score);
+
+        // Set the next level class before starting GameOverActivity
+        intent.putExtra("nextLevelClass", nextLevelClass);
+
+        startActivity(intent);
+    }
+
 }

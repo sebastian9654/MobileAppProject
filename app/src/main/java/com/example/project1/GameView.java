@@ -1,4 +1,5 @@
 package com.example.project1;// Import necessary packages
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -157,7 +158,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
 
             // Check if the score is 100
-            if (score == 100) {
+            if (score == 20) {
                 showLevelCompleteMessage();
                 startNextLevelActivity();
             }
@@ -185,16 +186,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // Toast.makeText(context, "Congratulations! You beat this level!", Toast.LENGTH_SHORT).show();
     }
 
+
     private void startNextLevelActivity() {
         // Create an Intent to start the next level activity
+        System.out.println("startnextlevel call");
         Intent intent = new Intent(context, FoodMatch.class);
-
-        // You may want to add extra data to the Intent if needed
-        // For example, you can pass the current score to the next level
-        // intent.putExtra("score", score);
-
-        // Start the next level activity
         context.startActivity(intent);
+        gameOver = true;
+        ((Activity) context).finish();
     }
 
     public void resume() {

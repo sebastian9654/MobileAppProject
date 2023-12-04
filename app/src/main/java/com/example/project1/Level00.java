@@ -4,6 +4,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
+
 public class Level00 extends AppCompatActivity {
 
     private GameView gameView;
