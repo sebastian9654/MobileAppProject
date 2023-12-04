@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Add a click listener for the start game button
         startGameButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, Level00.class);
+            Intent intent = new Intent(MainActivity.this, ShoppingCartActivity.class);
             startActivity(intent);
         });
 

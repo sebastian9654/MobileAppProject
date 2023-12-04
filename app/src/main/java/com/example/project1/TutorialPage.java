@@ -32,8 +32,7 @@ public class TutorialPage extends AppCompatActivity {
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // opening a new intent to open Level00 activity.
-                Intent level00Intent = new Intent(TutorialPage.this, Level00.class);
+                Intent level00Intent = new Intent(TutorialPage.this, ShoppingCartActivity.class);
                 startActivity(level00Intent);
                 finish();
             }

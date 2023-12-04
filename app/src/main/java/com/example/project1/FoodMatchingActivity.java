@@ -1,10 +1,6 @@
 package com.example.project1;
 
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -20,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class FoodMatch extends AppCompatActivity {
+public class FoodMatchingActivity extends AppCompatActivity {
 
     private ImageView foodToMatchView;
     private Button option1Button, option2Button, option3Button;
@@ -32,8 +28,8 @@ public class FoodMatch extends AppCompatActivity {
     private static final long TIMER_DURATION = 60000; // 60 seconds
 
     private Map<Integer, String> foodNameMap = new HashMap<>();
-    private Class<?> nextLevelClass = GameLevelActivity.class; // Replace with your next level class
-
+    private Class<?> nextLevelClass = BroccoliRunActivity.class; // Replace with your next level class
+    private final int MINIMUM_SCORE = 20;
     private int[] ingredients = {
             R.drawable.carrot_jigsaw,
             R.drawable.egg_jigsaw,
@@ -111,7 +107,17 @@ public class FoodMatch extends AppCompatActivity {
             public void onFinish() {
                 // Handle end of game
                 // For example, display final score or navigate to the result screen
-                Toast.makeText(FoodMatch.this, "Game Over!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FoodMatchingActivity.this, "Game Over!", Toast.LENGTH_SHORT).show();
+                if (score >= MINIMUM_SCORE) {
+                    System.out.println("Go next");
+                    goNext(); // go to next activity
+                    finish();
+                }
+                else {
+                    System.out.println("Restarting...");
+                    restartThis();
+                    finish();
+                }
             }
         }.start();
     }
@@ -127,9 +133,6 @@ public class FoodMatch extends AppCompatActivity {
             Toast.makeText(this, "Incorrect Match!", Toast.LENGTH_SHORT).show();
         }
         setOptionTexts(correctFoodName);
-        if (this.score == 5) {
-            startNextLevelActivity();
-        }
         startGame();
     }
 
@@ -141,15 +144,9 @@ public class FoodMatch extends AppCompatActivity {
         }
     }
 
-    private void startNextLevelActivity() {
-        // Create an Intent to start the next level activity
-        Intent intent = new Intent(FoodMatch.this, GameLevelActivity.class);
-        gameOver();
-        finish();
-    }
-    private void gameOver() {
+    private void goNext() {
         // Start the GameOverActivity and pass the score
-        Intent intent = new Intent(FoodMatch.this, GameOverActivity.class);
+        Intent intent = new Intent(FoodMatchingActivity.this, NextLevelActivity.class);
         intent.putExtra("score", score);
 
         // Set the next level class before starting GameOverActivity
@@ -157,5 +154,18 @@ public class FoodMatch extends AppCompatActivity {
 
         startActivity(intent);
     }
+
+    private void restartThis() {
+        // Start the GameOverActivity and pass the score
+        Intent intent = new Intent(FoodMatchingActivity.this, RestartGameActivity.class);
+        intent.putExtra("score", score);
+
+        // Set the next level class before starting GameOverActivity
+        intent.putExtra("nextLevelClass", FoodMatchingActivity.class);
+
+        startActivity(intent);
+    }
+
+
 
 }

@@ -1,19 +1,18 @@
 package com.example.project1;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class GameOverActivity extends AppCompatActivity {
+public class NextLevelActivity extends AppCompatActivity {
     private Class<?> nextLevelClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_over);
+        setContentView(R.layout.activity_next_level);
 
         int score = getIntent().getIntExtra("score", 0);
 
@@ -29,7 +28,7 @@ public class GameOverActivity extends AppCompatActivity {
 
     private void startNextLevel() {
         if (nextLevelClass != null) {
-            Intent intent = new Intent(GameOverActivity.this, nextLevelClass);
+            Intent intent = new Intent(NextLevelActivity.this, nextLevelClass);
             startActivity(intent);
         }
         finish();

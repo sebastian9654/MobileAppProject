@@ -16,11 +16,32 @@
         android:textSize="18sp" />
 
     <!-- Add a Main Menu Button -->
+
+    <TextView
+        android:id="@+id/endCredits"
+        android:layout_width="391dp"
+        android:layout_height="106dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="229dp"
+        android:layout_marginEnd="6dp"
+        android:text="You beat the game Congratulations. \n
+please check out the github repo at:
+https://github.com/sebastian9654/MobileAppProject"
+        android:textSize="18sp" />
+
     <Button
         android:id="@+id/mainMenuButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Main Menu"
+        android:backgroundTint="#39c45e"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:fontFamily="monospace"
         android:layout_below="@+id/creditsTextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp" />

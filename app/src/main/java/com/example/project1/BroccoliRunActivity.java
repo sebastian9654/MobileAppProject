@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class Level00 extends AppCompatActivity {
+public class BroccoliRunActivity extends AppCompatActivity {
 
     private GameView gameView;
 

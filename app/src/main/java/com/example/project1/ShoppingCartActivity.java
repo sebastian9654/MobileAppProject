@@ -1,4 +1,4 @@
-// GameLevelActivity.java
+// ShoppingCartActivity.java
 package com.example.project1;
 
 import android.content.Intent;
@@ -9,13 +9,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Random;
 
-public class GameLevelActivity extends AppCompatActivity {
+public class ShoppingCartActivity extends AppCompatActivity {
+    private Class<?> nextLevelClass = FoodMatchingActivity.class;
 
     private RelativeLayout gameLayout;
     private ImageView basket;
@@ -28,7 +28,7 @@ public class GameLevelActivity extends AppCompatActivity {
     private int score = 0;
     private int strikes = 0;
 
-    private static final int WINNING_SCORE = 1; // Set the winning score
+    private static final int WINNING_SCORE = 10; // Set the winning score
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +74,23 @@ public class GameLevelActivity extends AppCompatActivity {
     private void startFallingVegetables() {
         handler.postDelayed(runnable = new Runnable() {
             public void run() {
+                if (strikes == 3 || score == WINNING_SCORE) {
+                    handler.removeCallbacks(this); // Stop spawning items
+                    if (strikes == 3) {
+                        finish();
+                        restartThis();
+                    } else if (score == WINNING_SCORE) {
+                        finish();
+                        goNext();
+                    }
+                    return;
+                }
                 // Create a new ImageView for the falling item
                 ImageView item = new ImageView(getApplicationContext());
                 Random random = new Random();
 
                 // Set a random item image (including the bomb)
-                final int[] items = {R.drawable.egg, R.drawable.carrot, R.drawable.onion, R.drawable.tomato, R.drawable.bomb};
+                final int[] items = {R.drawable.egg_jigsaw, R.drawable.carrot, R.drawable.onion, R.drawable.tomato, R.drawable.bomb};
                 int randomItem = random.nextInt(items.length);
 
                 // Debug print for random item selection
@@ -121,18 +132,6 @@ public class GameLevelActivity extends AppCompatActivity {
                             strikesTextView.setText("Strikes: " + strikes);
                             System.out.println("Strikes: " + strikes + " - Score: " + score);
                         }
-
-                        // Check for game over (3 strikes)
-                        if (strikes == 3) {
-                            gameOver();
-                            return; // Stop spawning items when the game is over
-                        }
-
-                        // Check for level completion (score of 15)
-                        if (score == WINNING_SCORE) {
-                            levelCompleted();
-                            return; // Stop spawning items when the level is completed
-                        }
                     }
                 });
 
@@ -163,31 +162,28 @@ public class GameLevelActivity extends AppCompatActivity {
         return !(firstViewLeft > secondViewRight || firstViewRight < secondViewLeft || firstViewTop > secondViewBottom || firstViewBottom < secondViewTop);
     }
 
-    // Handle game over
-    private void gameOver() {
-        Toast.makeText(this, "Game Over!", Toast.LENGTH_SHORT).show();
-        // Perform any additional actions for game over, e.g., show a dialog, navigate to another activity, etc.
-        finish(); // Close the current activity
-    }
+    private void goNext() {
+        // Start the NextLevelActivity and pass the score
+        Intent intent = new Intent(ShoppingCartActivity.this, NextLevelActivity.class);
+        intent.putExtra("score", score);
+        // Set the next level class before starting GameOverActivity
+        intent.putExtra("nextLevelClass", nextLevelClass);
 
-    // Handle level completion
-    private void levelCompleted() {
-        Toast.makeText(this, "Congratulations! You have beaten the level!", Toast.LENGTH_SHORT).show();
-
-        // Credits information
-        String credits = "Credits: Sebastian Rodriguez, Malcolm Imomio, Yesenia Hurtado\n" +
-                "Github Link: https://github.com/sebastian9654/MobileAppProject";
-
-
-        // Open the new activity for congratulations
-        Intent intent = new Intent(GameLevelActivity.this, CongratulationsActivity.class);
-        intent.putExtra("credits", credits);
         startActivity(intent);
-
-        // Close the current activity
         finish();
     }
 
+    private void restartThis() {
+        // Restart this level and pass the score
+        Intent intent = new Intent(ShoppingCartActivity.this, RestartGameActivity.class);
+        intent.putExtra("score", score);
+
+        //
+        intent.putExtra("nextLevelClass", ShoppingCartActivity.class);
+
+        startActivity(intent);
+        finish();
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
