@@ -36,6 +36,9 @@ public class ShoppingCartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_level_one);
 
         gameLayout = findViewById(R.id.gameLayout);
+
+        // Set the background of the gameLayout to the grocery.png image
+        gameLayout.setBackgroundResource(R.drawable.grocery);
         basket = findViewById(R.id.basket);
         scoreTextView = findViewById(R.id.scoreTextView);
         strikesTextView = findViewById(R.id.strikesTextView);
@@ -90,7 +93,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
                 Random random = new Random();
 
                 // Set a random item image (including the bomb)
-                final int[] items = {R.drawable.egg_jigsaw, R.drawable.carrot, R.drawable.onion, R.drawable.tomato, R.drawable.bomb};
+                final int[] items = {R.drawable.egg, R.drawable.carrot, R.drawable.onion, R.drawable.tomato, R.drawable.bomb};
                 int randomItem = random.nextInt(items.length);
 
                 // Debug print for random item selection

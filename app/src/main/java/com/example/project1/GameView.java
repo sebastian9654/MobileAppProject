@@ -28,7 +28,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private float broccoliVelocity = 0;
     private boolean gameOver = false;
     private Context context; // Add a reference to the Context
-    private final int MINIMUM_SCORE = 200;
+    private final int MINIMUM_SCORE = 100;
+    public static int screenWidth;
+    public static int screenHeight;
     public GameView(Context context) {
         super(context);
         this.context = context; // Initialize the context
@@ -48,7 +50,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void drawGame(Canvas canvas) {
-        canvas.drawColor(Color.parseColor("#FFFFFF")); // Light blue background
+        // Draw the background image
+        Bitmap backgroundImage = BitmapFactory.decodeResource(getResources(), R.drawable.level3);
+        Rect destRectBackground = new Rect(0, 0, getWidth(), getHeight());
+        canvas.drawBitmap(backgroundImage, null, destRectBackground, paint);
+
         if (gameOver) {
             paint.setTextSize(100);
             paint.setColor(Color.BLACK);
@@ -74,9 +80,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         running = true;  // Start the game loop
+        // Set the screen dimensions
+        screenWidth = getWidth();
+        screenHeight = getHeight();
 
         // Initialize the obstacle with the correct width inside surfaceCreated
-        obstacle = new Obstacle(getWidth(), getHeight() - 200, 100, 150);
+        obstacle = new Obstacle(screenWidth, screenWidth, screenHeight, 100, 150);
+
 
         new Thread(() -> {
             while (running) {
@@ -151,12 +161,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if (isCollision()) {
                 handleCollision();
                 // Check if the score = MINIMUM_SCORE
-                if (score >= MINIMUM_SCORE) {
-                    startCongratsActivity();
-                }
-                else {
+
+
                     restartThis();
-                }
+
+            }
+
+
+            if (score >= MINIMUM_SCORE) {
+                startCongratsActivity();
             }
         }
     }
