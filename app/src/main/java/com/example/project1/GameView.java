@@ -28,7 +28,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private float broccoliVelocity = 0;
     private boolean gameOver = false;
     private Context context; // Add a reference to the Context
-    private final int MINIMUM_SCORE = 200;
+    private final int MINIMUM_SCORE = 100;
     public GameView(Context context) {
         super(context);
         this.context = context; // Initialize the context
