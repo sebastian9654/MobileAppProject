@@ -1,4 +1,4 @@
-# Plant-Based Food App
+# Veggie Venture
 
 Welcome to our Plant-Based Food App project repository! This app is developed as part of a mobile app development class to cater to users following plant-based diets. This README file aims to provide an overview of the project, its functionalities, and the team involved.
 
