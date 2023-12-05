@@ -20,7 +20,7 @@ public class CongratulationsActivity extends AppCompatActivity {
         String credits = getIntent().getStringExtra("credits");
 
         // Display credits in the TextView
-        TextView creditsTextView = findViewById(R.id.creditsTextView);
+        TextView creditsTextView = findViewById(R.id.congratsMessage);
         creditsTextView.setText(credits);
 
         // Add a click listener for the Main Menu button

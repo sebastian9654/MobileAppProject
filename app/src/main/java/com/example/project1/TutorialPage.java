@@ -29,13 +29,10 @@ public class TutorialPage extends AppCompatActivity {
             }
         });
 
-        buttonNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent level00Intent = new Intent(TutorialPage.this, ShoppingCartActivity.class);
-                startActivity(level00Intent);
-                finish();
-            }
+        buttonNext.setOnClickListener(v -> {
+            Intent level00Intent = new Intent(TutorialPage.this, ShoppingCartActivity.class);
+            startActivity(level00Intent);
+            finish();
         });
     }
 }

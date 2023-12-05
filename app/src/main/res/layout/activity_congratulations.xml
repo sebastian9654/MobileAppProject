@@ -4,46 +4,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".CongratulationsActivity">
 
-    <!-- Add a TextView for displaying credits -->
-    <TextView
-        android:id="@+id/creditsTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_centerInParent="true"
-        android:textSize="18sp" />
+    <!-- Add a more visually appealing layout with a background image or color -->
 
-    <!-- Add a Main Menu Button -->
+    <!-- Add a TextView for the congratulations message -->
 
-    <TextView
-        android:id="@+id/endCredits"
-        android:layout_width="391dp"
-        android:layout_height="106dp"
+    <!-- Add a Button for returning to the Main Menu -->
+
+    <!-- Add an optional section for additional information or links -->
+
+    <ImageView
+        android:layout_width="412dp"
+        android:layout_height="544dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="229dp"
-        android:layout_marginEnd="6dp"
-        android:text="You beat the game Congratulations. \n
-please check out the github repo at:
-https://github.com/sebastian9654/MobileAppProject"
-        android:textSize="18sp" />
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="-2dp"
+        android:background="@drawable/confetti"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/congratsMessage"
+        android:layout_width="286dp"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="66dp"
+        android:layout_marginTop="227dp"
+        android:gravity="center"
+        android:text="Congratulations! You've completed the game."
+        android:textColor="@color/black"
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/mainMenuButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Main Menu"
-        android:backgroundTint="#39c45e"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:fontFamily="monospace"
-        android:layout_below="@+id/creditsTextView"
+        android:layout_height="77dp"
+        android:layout_below="@id/congratsMessage"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="80dp"
+        android:backgroundTint="#39c45e"
+        android:fontFamily="monospace"
+        android:text="Return to Main Menu"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/additionalInfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mainMenuButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="103dp"
+        android:text="For more information, check out our GitHub repository:"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/githubLinkTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="https://github.com/sebastian9654/MobileAppProject"
+        android:textSize="16sp"
+        android:textColor="@color/cardview_dark_background"
+        android:layout_below="@id/additionalInfoTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:autoLink="web" />
 
 </RelativeLayout>
