@@ -10,13 +10,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome!"
+        android:fontFamily="monospace"
+        android:text="Welcome to Veggie Venture World!"
+        android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.481"
+        app:layout_constraintHorizontal_bias="0.644"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.348" />
+        app:layout_constraintVertical_bias="0.354" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -35,7 +37,7 @@
         android:layout_width="118dp"
         android:layout_height="102dp"
         android:layout_marginStart="144dp"
-        android:layout_marginBottom="248dp"
+        android:layout_marginBottom="264dp"
         android:contentDescription="Character"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,19 +74,7 @@
         app:layout_constraintHorizontal_bias="0.932"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/editName"
-        android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="64dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Name: "
-        app:layout_constraintBottom_toTopOf="@+id/imageButton"
-        android:fontFamily="monospace"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent" />
+
 
 
 

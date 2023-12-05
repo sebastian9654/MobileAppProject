@@ -28,11 +28,11 @@ public class FoodMatchingActivity extends AppCompatActivity {
     private int score = 0;
     private TextView scoreTextView, timerTextView;
     private CountDownTimer countDownTimer;
-    private static final long TIMER_DURATION = 3000; // 60 seconds
+    private static final long TIMER_DURATION = 60000; // 60 seconds
 
     private Map<Integer, String> foodNameMap = new HashMap<>();
     private Class<?> nextLevelClass = BroccoliRunActivity.class; // Replace with your next level class
-    private final int MINIMUM_SCORE = 1;
+    private final int MINIMUM_SCORE = 15;
     private int[] ingredients = {
             R.drawable.carrot,
             R.drawable.realegg,
@@ -75,19 +75,6 @@ public class FoodMatchingActivity extends AppCompatActivity {
             R.drawable.shrimp,
             R.drawable.strawberry,
             R.drawable.tuna,
-
-
-
-
-
-
-
-
-
-
-
-
-
     };
     private ConstraintLayout gameLayout;
 
