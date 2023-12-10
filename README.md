@@ -1,5 +1,6 @@
 # Veggie Venture
 
+This app was created for our Fall 2023 Mobile App Developmnt Final Project.
 Welcome to our Plant-Based Food App project repository! This app is developed as part of a mobile app development class to cater to users following plant-based diets. This README file aims to provide an overview of the project, its functionalities, and the team involved.
 
 ## Team Members
